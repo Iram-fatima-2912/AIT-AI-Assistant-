@@ -1,8 +1,25 @@
-print("Welcome to AIT AI Development!")
 
-student_name = input("Enter your name: ")
+import os
+from dotenv import load_dotenv
+from groq import Groq
 
-print("Hello", student_name)
-print("Your first AI project is ready!")
+load_dotenv()
 
-print("Welcome to AIT Module 9!") 
+api_key = os.getenv("GROQ_API_KEY")
+
+if not api_key:
+    raise ValueError("Groq API key not found!")
+
+client = Groq(api_key=api_key)
+
+response = client.chat.completions.create(
+     model="openai/gpt-oss-20b",
+    messages=[
+        {
+            "role": "user",
+            "content": "Explain Artificial Intelligence in simple words."
+        }
+    ]
+)
+
+print(response.choices[0].message.content)
